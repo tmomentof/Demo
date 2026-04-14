@@ -433,7 +433,7 @@ useEffect(() => {
         <div style={{ width: "100%" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 16, marginBottom: 6, position: "relative" }}>
             {!isMobile && <p className="font-sans" style={guidePill}>Guide</p>}
-            <h3 className="font-serif" style={{ margin: 0, fontSize: 30, lineHeight: 1.04, fontWeight: 600, color: "#2C1A08" }}>{renderStageTitle()}</h3>
+            <h3 className="font-serif" style={{ margin: 0, fontSize: isMobile ? 26 : 30, lineHeight: 1.04, fontWeight: 600, color: "#2C1A08" , textAlign: "center" }}>{renderStageTitle()}</h3>
           </div>
           <p className="font-reading" style={{ margin: 0, textAlign: "center", fontSize: 14, lineHeight: 1.58, color: "rgba(44,26,8,0.66)" }}>{renderStageDetail()}</p>
         </div>
