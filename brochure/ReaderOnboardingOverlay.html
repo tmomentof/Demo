@@ -9,6 +9,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <style>
+    @media (max-width: 900px) {
+  .book-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
 html { background: transparent; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -244,6 +249,8 @@ function ReaderOnboardingOverlay() {
   const [signatureHovered, setSignatureHovered] = useState(false);
   const [tutorialMomentId] = useState(() => `tutorial-${Date.now()}`);
   const [done, setDone] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+
 
   const selectedBook    = BOOKS.find(b => b.id === selectedBookId) || null;
   const selectedPassage = selectedBook
@@ -284,9 +291,27 @@ function ReaderOnboardingOverlay() {
     return "This is where reading turns into relation.";
   };
 
+useEffect(() => {
+  const handleResize = () => setIsMobile(window.innerWidth < 800);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+
   /* ── step 0 / no book: book grid ── */
-  const BookGrid = () => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 16, flex: 1 }}>
+  const BookGrid = () => {
+  const [cols, setCols] = useState(window.innerWidth < 800 ? "1fr" : "repeat(3, minmax(0,1fr))");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCols(window.innerWidth < 800 ? "1fr" : "repeat(3, minmax(0,1fr))");
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: cols, gap: 16, flex: 1, overflowY: "auto" }}>
       {BOOKS.map(book => (
         <button key={book.id}
           onClick={() => { setSelectedBookId(book.id); setSelectedPassageId(null); }}
@@ -301,15 +326,9 @@ function ReaderOnboardingOverlay() {
             flexDirection: "column",
             gap: 12,
             justifyContent: "space-between",
-            background: hoveredBookId === book.id
-              ? "linear-gradient(160deg, #221508 0%, #1A0F08 40%, #0E0A05 100%)"
-              : softCard.background,
-            border: hoveredBookId === book.id
-              ? "1px solid rgba(212,184,122,0.42)"
-              : softCard.border,
-            boxShadow: hoveredBookId === book.id
-              ? "0 0 0 1px rgba(196,160,85,0.08), 0 8px 32px rgba(139,105,20,0.18)"
-              : softCard.boxShadow,
+            background: hoveredBookId === book.id ? "linear-gradient(160deg, #221508 0%, #1A0F08 40%, #0E0A05 100%)" : softCard.background,
+            border: hoveredBookId === book.id ? "1px solid rgba(212,184,122,0.42)" : softCard.border,
+            boxShadow: hoveredBookId === book.id ? "0 0 0 1px rgba(196,160,85,0.08), 0 8px 32px rgba(139,105,20,0.18)" : softCard.boxShadow,
             transition: "background 260ms ease, border-color 260ms ease, color 260ms ease, box-shadow 260ms ease",
           }}>
           <div style={{ height: 228, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.78)", borderRadius: "6px 14px 14px 6px", boxShadow: "0 14px 24px rgba(0,0,0,0.1)", overflow: "hidden" }}>
@@ -317,7 +336,7 @@ function ReaderOnboardingOverlay() {
           </div>
           <div>
             <p className="font-serif" style={{ margin: "0 0 4px", fontSize: 19, lineHeight: 1.08, fontWeight: 700, color: hoveredBookId === book.id ? "#F8F2E4" : "#2C1A08", transition: "color 260ms ease" }}>{book.title}</p>
-            <p className="font-sans"  style={{ margin: 0, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 700, color: hoveredBookId === book.id ? "#D4B87A" : "rgba(139,105,20,0.68)", transition: "color 260ms ease" }}>{book.author}</p>
+            <p className="font-sans" style={{ margin: 0, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 700, color: hoveredBookId === book.id ? "#D4B87A" : "rgba(139,105,20,0.68)", transition: "color 260ms ease" }}>{book.author}</p>
           </div>
           <div style={{ minHeight: 74, padding: "12px 14px", borderTop: hoveredBookId === book.id ? "1px solid rgba(212,184,122,0.18)" : "1px solid rgba(139,105,20,0.14)", background: hoveredBookId === book.id ? "rgba(255,255,255,0.04)" : "transparent", opacity: hoveredBookId === book.id ? 1 : 0.72, transition: "background 260ms ease, opacity 260ms ease, border-color 260ms ease" }}>
             <p className="font-reading" style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: hoveredBookId === book.id ? "rgba(248,242,228,0.72)" : "rgba(44,26,8,0.72)", transition: "color 260ms ease" }}>{book.summary}</p>
@@ -326,17 +345,29 @@ function ReaderOnboardingOverlay() {
       ))}
     </div>
   );
+};
 
   /* ── step 0 / book selected: passage list ── */
-  const PassageSelect = () => (
-    <div style={{ display: "grid", gridTemplateColumns: "0.68fr 1.32fr", gap: 16, flex: 1 }}>
+  const PassageSelect = () => {
+  const [cols, setCols] = useState(window.innerWidth < 800 ? "1fr" : "0.68fr 1.32fr");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCols(window.innerWidth < 800 ? "1fr" : "0.68fr 1.32fr");
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: cols, gap: 16, flex: 1, overflowY: "auto" }}>
       <div style={{ ...softCard, padding: "18px 18px 14px", display: "flex", flexDirection: "column" }}>
         <p className="font-sans" style={{ margin: "0 0 10px", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: "rgba(139,105,20,0.72)" }}>Chosen Book</p>
         <div style={{ height: 340, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.78)", borderRadius: "6px 14px 14px 6px", boxShadow: "0 12px 22px rgba(0,0,0,0.1)", overflow: "hidden", marginBottom: 12, padding: "6px 8px" }}>
-            <img src={selectedBook.cover} alt={selectedBook.title} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", maxWidth: "96%", maxHeight: "96%" }} onError={e => e.target.style.display = "none"} />
+          <img src={selectedBook.cover} alt={selectedBook.title} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", maxWidth: "96%", maxHeight: "96%" }} onError={e => e.target.style.display = "none"} />
         </div>
         <p className="font-serif" style={{ margin: "0 0 4px", fontSize: 19, lineHeight: 1.08, fontWeight: 700, color: "#2C1A08" }}>{selectedBook.title}</p>
-        <p className="font-sans"  style={{ margin: 0, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 700, color: "rgba(139,105,20,0.68)" }}>{selectedBook.author}</p>
+        <p className="font-sans" style={{ margin: 0, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 700, color: "rgba(139,105,20,0.68)" }}>{selectedBook.author}</p>
       </div>
 
       <div style={{ ...softCard, padding: "18px", display: "flex", flexDirection: "column", gap: 12 }}>
@@ -344,7 +375,7 @@ function ReaderOnboardingOverlay() {
         {selectedBook.passages.map((passage, index) => {
           const pid = `${selectedBook.id}-${index}`;
           const active = selectedPassageId === pid;
-          const hov   = hoveredPassageId === pid;
+          const hov = hoveredPassageId === pid;
           return (
             <button key={pid}
               onClick={() => { setSelectedPassageId(pid); setStep(1); }}
@@ -370,7 +401,7 @@ function ReaderOnboardingOverlay() {
       </div>
     </div>
   );
-
+};
   /* ── step 1: write interpretation ── */
   /* Directly in the main return where {step === 1 && tutorialMoment && (...)}*/
 
@@ -401,7 +432,7 @@ function ReaderOnboardingOverlay() {
         {/* header */}
         <div style={{ width: "100%" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 16, marginBottom: 6, position: "relative" }}>
-            <p className="font-sans" style={guidePill}>Guide</p>
+            {!isMobile && <p className="font-sans" style={guidePill}>Guide</p>}
             <h3 className="font-serif" style={{ margin: 0, fontSize: 30, lineHeight: 1.04, fontWeight: 600, color: "#2C1A08" }}>{renderStageTitle()}</h3>
           </div>
           <p className="font-reading" style={{ margin: 0, textAlign: "center", fontSize: 14, lineHeight: 1.58, color: "rgba(44,26,8,0.66)" }}>{renderStageDetail()}</p>
@@ -411,7 +442,7 @@ function ReaderOnboardingOverlay() {
         {step === 0 && !selectedBook  && <BookGrid/>}
         {step === 0 && selectedBook   && <PassageSelect/>}
         {step === 1 && tutorialMoment && (
-            <div style={{ display: "grid", gridTemplateColumns: "0.92fr 1.08fr", gap: 16, flex: 1 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "0.92fr 1.08fr", gap: 16, flex: 1 }}>
                 <div style={{ ...softCard, padding: 20 }}>
                 <p className="font-sans" style={{ margin: "0 0 10px", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: "rgba(139,105,20,0.72)" }}>Moment</p>
                 <div style={{ padding: "18px 20px", borderRadius: 20, background: "rgba(255,255,255,0.74)", border: "1px solid rgba(139,105,20,0.08)" }}>
@@ -442,7 +473,7 @@ function ReaderOnboardingOverlay() {
         )}
         {step === 2 && tutorialMoment && (
             <div style={{ display: "flex", flexDirection: "column", gap: 14, flex: 1, minHeight: 0 }}>
-            <div style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0,1fr) 210px minmax(0,1fr)", gap: 16, alignItems: "stretch", minHeight: 0 }}>
+            <div style={{ position: "relative", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) 210px minmax(0,1fr)", gap: 16, alignItems: "stretch", minHeight: 0 }}>
 
                 {/* your momento */}
                 <div style={{ ...softCard, padding: 20, display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 0, zIndex: 1 }}>
@@ -549,7 +580,7 @@ function ReaderOnboardingOverlay() {
             </div>
         )}
         {step === 3 && tutorialMoment &&  (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
             {/* left: waved-back card */}
             <div style={{ ...softCard, padding: 20, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                 <p className="font-sans" style={{ margin: "0 0 10px", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: "rgba(139,105,20,0.72)", textAlign: "center" }}>Waved back</p>
