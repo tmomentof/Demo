@@ -449,7 +449,7 @@ useEffect(() => {
                     <p className="font-reading" style={{ margin: 0, fontSize: 16, lineHeight: 1.86, fontStyle: "italic", color: "#2C1A08" }}>"{tutorialMoment.passage}"</p>
                 </div>
                 </div>
-                <div style={{ ...softCard, padding: 20, display: "flex", flexDirection: "column", background: "linear-gradient(160deg, #221508 0%, #1A0F08 40%, #0E0A05 100%)", border: "1px solid rgba(212,184,122,0.42)", boxShadow: "0 0 0 1px rgba(196,160,85,0.08), 0 8px 32px rgba(139,105,20,0.18)" }}>
+                <div style={{ ...softCard, padding: isMobile ? 12 : 20, display: "flex", flexDirection: "column", background: "linear-gradient(160deg, #221508 0%, #1A0F08 40%, #0E0A05 100%)", border: "1px solid rgba(212,184,122,0.42)", boxShadow: "0 0 0 1px rgba(196,160,85,0.08), 0 8px 32px rgba(139,105,20,0.18)" }}>
                 <p className="font-sans" style={{ margin: "0 0 10px", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: "#D4B87A" }}>Momento</p>
                 <div style={{ ...momentoCardShell, flex: 1 }}>
                     <div style={momentoAccentLine}/>
@@ -464,7 +464,7 @@ useEffect(() => {
                         value={interpretation}
                         onChange={e => setInterpretation(e.target.value)}
                         placeholder="what do you think and feel of this moment..."
-                        style={{ flex: 1, minHeight: 250, border: "none", padding: 0, resize: "none", background: "transparent", color: "var(--text)", fontFamily: "'Kalam', cursive", fontSize: 24, lineHeight: 1.55, outline: "none", direction: "ltr" }}
+                        style={{ flex: 1,minHeight: isMobile ? 120 : 250, border: "none", padding: 0, resize: "none", background: "transparent", color: "var(--text)", fontFamily: "'Kalam', cursive", fontSize: isMobile ? 16 : 24, lineHeight: 1.55, outline: "none", direction: "ltr" }}
                     />
                     </div>
                 </div>
