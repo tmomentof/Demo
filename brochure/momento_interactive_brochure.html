@@ -747,8 +747,7 @@ body {
 ═══════════════════════════════════════════ -->
 
 <!-- ── DEMO OVERLAY ── -->
-<div id="demo-overlay" style="display:none; position:fixed; inset:0; z-index:900; background:#1e1508; align-items:center; justify-content:center; padding:24px;">
-
+  <div id="demo-overlay" style="display:none; position:fixed; inset:0; z-index:900; background:#1e1508; align-items:center; justify-content:center; padding:24px; opacity:0; transition:opacity 0.6s ease;">
   <!-- the guide loaded in an iframe -->
   <iframe src="ReaderOnboardingOverlay.html"
     allowtransparency="true"
@@ -779,7 +778,8 @@ body {
     <p style="font-family:'Playfair Display',serif; font-size:18px; color:#d0b880; line-height:1.9; margin-bottom:28px;">
       Walk through the core momento experience: <br>capture a passage, write your interpretation, find a close reader, and send your first whisper.
     </p>
-    <button onclick="const o=document.getElementById('demo-overlay'); o.style.display='flex'; setTimeout(()=>o.style.opacity='1',10);"
+    <button 
+      onclick="const o=document.getElementById('demo-overlay'); const f=o.querySelector('iframe'); f.src='ReaderOnboardingOverlay.html'; o.style.display='flex'; setTimeout(()=>o.style.opacity='1',300);"
       style="display:inline-block; padding:14px 40px; border:none; background:#1e1508; font-family:'DM Sans',sans-serif; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:#ede5ce; cursor:pointer; transition:background 0.2s ease;"
       onmouseover="this.style.background='#3a2c18'"
       onmouseout="this.style.background='#1e1508'">
@@ -1013,6 +1013,28 @@ body {
   <p class="appendix-note fade-in">All interpretations anonymously processed via Google Gemini. Your name and identity are never shared.</p>
 </div>
 
+
+<!-- ══════════════════════════════════════════
+     ABOUT MOMENTO — EXPANDABLE
+═══════════════════════════════════════════ -->
+
+<div class="logo-accordion-wrap">
+  <button class="logo-accordion-btn" onclick="toggleAbout(this)" aria-expanded="false">
+    About <span style="display:inline-block; width:90px; overflow:hidden;"><img src="logo.png" alt="momento" style="height: 22px; filter: brightness(0.3); margin-left:-28px; margin-top:8px;" /></span> <span class="logo-acc-arrow">↓</span>
+  </button>
+  <div class="logo-accordion-body" id="about-accordion-body">
+    <div class="logo-points">
+      <div class="logo-point">
+        <div class="logo-point-content" style="max-width: 680px; margin: 0 auto;">
+          <p class="logo-point-text" style="text-align: center;">The word momento itself carries meaning in multiple languages. <br>In Italian and Spanish it means moment, an instant in time. In English it echoes memento, an object kept as a memory. The platform name lives at the intersection of both: <br>capturing the moment and making it something you carry forward.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- ══════════════════════════════════════════
      THE LOGO — EXPANDABLE
 ═══════════════════════════════════════════ -->
@@ -1077,19 +1099,7 @@ body {
   <div class="colophon-tagline">"Read Moments Worth Sharing"</div>
   <div class="colophon-rule"></div>
   <div class="colophon-contact">
-    Contact &nbsp;·&nbsp; <span>themomentofolio@gmail.com</span>
-  </div>
-  <div>
-    <div class="qr-wrap">
-      <div class="qr-g">
-        <div class="q"></div><div class="q"></div><div class="q"></div><div class="q e"></div><div class="q"></div>
-        <div class="q"></div><div class="q e"></div><div class="q"></div><div class="q"></div><div class="q e"></div>
-        <div class="q"></div><div class="q"></div><div class="q e"></div><div class="q"></div><div class="q"></div>
-        <div class="q e"></div><div class="q"></div><div class="q e"></div><div class="q e"></div><div class="q"></div>
-        <div class="q"></div><div class="q e"></div><div class="q"></div><div class="q"></div><div class="q e"></div>
-      </div>
-    </div>
-    <div class="scan">Scan to try the live demo</div>
+    Contact &nbsp;·&nbsp; <span><a href="mailto:themomentofolio@gmail.com" style="color:#7a6040; text-decoration:none;">themomentofolio@gmail.com</a></span>
   </div>
 </div>
 
@@ -1107,6 +1117,12 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 function toggleLogo(btn) {
   const body = document.getElementById('logo-accordion-body');
+  const open = body.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+
+function toggleAbout(btn) {
+  const body = document.getElementById('about-accordion-body');
   const open = body.classList.toggle('open');
   btn.setAttribute('aria-expanded', open);
 }
