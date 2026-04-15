@@ -757,7 +757,7 @@ body {
     ✦ better in light mode
   </div>
   <div style="position: relative; display: inline-block;">
-    <button onclick="window.open('https://hvasisht.github.io/momento-frontend-demo/', '_blank')"
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
       style="font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: #ede5ce; background: #3a2c18; border: 0.5px solid #c0b088; padding: 5px 12px; border-radius: 20px; cursor: pointer;">
       Try Momento →
     </button>
@@ -801,12 +801,13 @@ body {
       Walk through the core momento experience: <br>capture a passage, write your interpretation, find a close reader, and send your first whisper.
     </p>
     <button 
-      onclick="document.getElementById('top-bar').style.display='none'; const o=document.getElementById('demo-overlay'); const f=o.querySelector('iframe'); f.src='ReaderOnboardingOverlay.html'; o.style.display='flex'; setTimeout(()=>o.style.opacity='1',300);"
+      onclick="window.open('https://hvasisht.github.io/momento-frontend-demo/', '_blank')"
       style="display:inline-block; padding:14px 40px; border:none; background:#1e1508; font-family:'DM Sans',sans-serif; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:#ede5ce; cursor:pointer; transition:background 0.2s ease;"
       onmouseover="this.style.background='#3a2c18'"
       onmouseout="this.style.background='#1e1508'">
-      Open Guide →
+      Try Momento →
     </button>
+    <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: #9a8a68; margin: 8px 0 0;">explore the full app · best on iPad or laptop</p>
   </div>
 
   <h1 class="book-title">A gen'<span class="pun">New</span>'uine</h1>
