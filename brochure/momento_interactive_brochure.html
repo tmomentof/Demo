@@ -743,6 +743,10 @@ body {
 @media (max-width: 680px) {
   #app-tooltip { opacity: 1 !important; }
 }
+
+@media (prefers-color-scheme: dark) {
+  .frontispiece img { filter: invert(1) brightness(2); }
+}
 </style>
 </head>
 <body>
@@ -754,7 +758,7 @@ body {
   <div style="position: relative; display: inline-block;">
     <button onclick="window.open('https://hvasisht.github.io/momento-frontend-demo/', '_blank')"
       style="font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: #ede5ce; background: #3a2c18; border: 0.5px solid #c0b088; padding: 5px 12px; border-radius: 20px; cursor: pointer;">
-      Explore the App · best on iPad or laptop →
+      Try Momento →
     </button>
   </div>
 </div>
@@ -791,7 +795,7 @@ body {
 
   <!-- DEMO BUTTON -->
   <div style="margin: 32px 0 40px; border: 0.5px solid #3a2c18; padding: 40px 48px; background: #3a2c18; text-align:center; border-radius: 16px;">
-    <h2 class="ch-title" style="color:#e0cfa8;">See Guide here.</h2>
+    <h2 class="ch-title" style="color:#e0cfa8;">See how to use momento.</h2>
     <p style="font-family:'Playfair Display',serif; font-size:18px; color:#d0b880; line-height:1.9; margin-bottom:28px;">
       Walk through the core momento experience: <br>capture a passage, write your interpretation, find a close reader, and send your first whisper.
     </p>
