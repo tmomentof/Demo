@@ -745,7 +745,8 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  .frontispiece img[src="logo.png"] { content: url("logo-clean.png"); }
+  img[src="logo.png"] { content: url("logo-clean.png"); filter: none !important; }
+  img[src="just-logo.png"] { filter: brightness(3) opacity(0.75) !important; }
 }
 </style>
 </head>
